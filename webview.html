@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Jobs</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<h1>LinkedIn Jobs</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Company</th>
+            <th>Location</th>
+            <th>Apply</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Table data will be loaded here -->
+    </tbody>
+</table>
+
+<script>
+    // Fetch CSV data and populate the table
+    fetch('purified_linkedin-jobs.csv')
+        .then(response => response.text())
+        .then(csv => {
+            const rows = csv.split('\n').slice(1); // Skip header
+            const tableBody = document.querySelector('tbody');
+
+            rows.forEach(row => {
+                const columns = row.split(',');
+                const [title, company, location, apply] = columns.map(column => column.trim());
+
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td>${title}</td>
+                    <td>${company}</td>
+                    <td>${location}</td>
+                    <td><a href="${apply}">Apply</a></td>
+                `;
+
+                tableBody.appendChild(newRow);
+            });
+        })
+        .catch(error => console.error('Error fetching CSV:', error));
+</script>
+
+</body>
+</html>
